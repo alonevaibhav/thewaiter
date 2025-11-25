@@ -15,7 +15,6 @@ class WaiterDrawer extends StatelessWidget {
     final colorScheme = theme.colorScheme;
     final ThemeController themeController = Get.find<ThemeController>();
 
-
     return Drawer(
       child: SafeArea(
         child: Column(
@@ -62,10 +61,7 @@ class WaiterDrawer extends StatelessWidget {
               },
             ),
             ListTile(
-              leading: Icon(
-                PhosphorIcons.user(),
-                color: colorScheme.onSurface,
-              ),
+              leading: Icon(PhosphorIcons.user(), color: colorScheme.onSurface),
               title: Text('Profile'),
               onTap: () {
                 Navigator.pop(context);
@@ -73,10 +69,7 @@ class WaiterDrawer extends StatelessWidget {
               },
             ),
             ListTile(
-              leading: Icon(
-                PhosphorIcons.gear(),
-                color: colorScheme.onSurface,
-              ),
+              leading: Icon(PhosphorIcons.gear(), color: colorScheme.onSurface),
               title: Text('Settings'),
               onTap: () {
                 Navigator.pop(context);
@@ -84,32 +77,30 @@ class WaiterDrawer extends StatelessWidget {
               },
             ),
 
-            Obx(() => ListTile(
-              leading: Icon(
-                themeController.isDarkMode
-                    ? PhosphorIcons.sun()
-                    : PhosphorIcons.moon(),
-                color: colorScheme.onSurface,
+            Obx(
+              () => ListTile(
+                leading: Icon(
+                  themeController.isDarkMode
+                      ? PhosphorIcons.sun()
+                      : PhosphorIcons.moon(),
+                  color: colorScheme.onSurface,
+                ),
+                title: Text(
+                  themeController.isDarkMode ? 'Light Mode' : 'Dark Mode',
+                ),
+                trailing: Switch(
+                  value: themeController.isDarkMode,
+                  onChanged: (value) => themeController.toggleTheme(),
+                  activeColor: AppTheme.primary,
+                ),
+                onTap: () => themeController.toggleTheme(),
               ),
-              title: Text(themeController.isDarkMode ? 'Light Mode' : 'Dark Mode'),
-              trailing: Switch(
-                value: themeController.isDarkMode,
-                onChanged: (value) => themeController.toggleTheme(),
-                activeColor: AppTheme.primary,
-              ),
-              onTap: () => themeController.toggleTheme(),
-            )),
+            ),
             Spacer(),
             Divider(),
             ListTile(
-              leading: Icon(
-                PhosphorIcons.signOut(),
-                color: Colors.red,
-              ),
-              title: Text(
-                'Logout',
-                style: TextStyle(color: Colors.red),
-              ),
+              leading: Icon(PhosphorIcons.signOut(), color: Colors.red),
+              title: Text('Logout', style: TextStyle(color: Colors.red)),
               onTap: () {
                 _showLogoutDialog(context);
               },

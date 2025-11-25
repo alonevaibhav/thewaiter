@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import '../../core/Theme/app_theme.dart';
-import '../../core/services/theme_service.dart';
-import '../controller/chef_controller.dart';
+import 'accept_order/accept_order.dart';
 import 'component/chef_drawer.dart';
 
 class ChefPanel extends StatelessWidget {
@@ -12,9 +10,6 @@ class ChefPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ChefPanelController controller = Get.put(ChefPanelController());
-    final ThemeController themeController = Get.put(ThemeController());
-
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
@@ -120,10 +115,7 @@ class ChefPanel extends StatelessWidget {
             ),
             Expanded(
               child: TabBarView(
-                children: [
-                  _buildPendingOrdersList(),
-                  _buildInProgressOrdersList(),
-                ],
+                children: [_buildAcceptOrdersList(), _buildInDoneOrdersList()],
               ),
             ),
           ],
@@ -132,14 +124,14 @@ class ChefPanel extends StatelessWidget {
     );
   }
 
-  Widget _buildPendingOrdersList() {
+  Widget _buildAcceptOrdersList() {
     return Padding(
       padding: EdgeInsets.all(AppTheme.space16),
-      child: const Placeholder(),
+      child: const AcceptOrdersPage(),
     );
   }
 
-  Widget _buildInProgressOrdersList() {
+  Widget _buildInDoneOrdersList() {
     return Padding(
       padding: EdgeInsets.all(AppTheme.space16),
       child: const Placeholder(),

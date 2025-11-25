@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:thewaiter/app/modules/controller/waiter_controller.dart';
 import '../../core/Theme/app_theme.dart';
 import 'component/waiter_drawer.dart';
 
@@ -11,7 +9,6 @@ class WaiterPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final WaiterPanelController controller = Get.put(WaiterPanelController());
 
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
