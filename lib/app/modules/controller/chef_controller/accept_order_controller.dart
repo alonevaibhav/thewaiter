@@ -95,131 +95,161 @@ class AcceptOrdersController extends GetxController {
     });
   }
 
-  void showRejectDialog(int orderNo) {
+  void showRejectDialog(int orderNo, BuildContext context) {
     final TextEditingController reasonController = TextEditingController();
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
 
-    Get.dialog(
-      Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
-        ),
-        child: Container(
-          padding: EdgeInsets.all(AppTheme.space24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 60.w,
-                height: 60.h,
-                decoration: BoxDecoration(
-                  color: AppTheme.error.withOpacity(0.1),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  PhosphorIcons.warning(),
-                  color: AppTheme.error,
-                  size: 32.sp,
-                ),
-              ),
-              SizedBox(height: AppTheme.space16),
-              Text(
-                'Reject Order #$orderNo',
-                style: Get.textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: AppTheme.space8),
-              Text(
-                'Please provide a reason for rejecting this order',
-                style: Get.textTheme.bodyMedium?.copyWith(
-                  color: AppTheme.textSecondary,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: AppTheme.space24),
-              TextField(
-                controller: reasonController,
-                maxLines: 4,
-                decoration: InputDecoration(
-                  hintText: 'Enter reason for cancellation...',
-                  hintStyle: TextStyle(
-                    color: AppTheme.textSecondary.withOpacity(0.6),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-                    borderSide: BorderSide(
-                      color: Get.theme.colorScheme.outline,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-                    borderSide: BorderSide(
-                      color: Get.theme.colorScheme.outline.withOpacity(0.5),
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-                    borderSide: BorderSide(
-                      color: AppTheme.primary,
-                      width: 2,
-                    ),
-                  ),
-                  contentPadding: EdgeInsets.all(AppTheme.space16),
-                ),
-              ),
-              SizedBox(height: AppTheme.space24),
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: () => Get.back(),
-                      style: OutlinedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(vertical: 14.h),
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                          BorderRadius.circular(AppTheme.radiusMedium),
-                        ),
-                        side: BorderSide(
-                          color: Get.theme.colorScheme.outline,
-                        ),
-                      ),
-                      child: Text(
-                        'Cancel',
-                        style: Get.textTheme.labelLarge?.copyWith(
-                          color: Get.theme.colorScheme.onSurface,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: AppTheme.space12),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        rejectOrder(orderNo, reasonController.text);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppTheme.error,
-                        padding: EdgeInsets.symmetric(vertical: 14.h),
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                          BorderRadius.circular(AppTheme.radiusMedium),
-                        ),
-                      ),
-                      child: Text(
-                        'Reject',
-                        style: Get.textTheme.labelLarge?.copyWith(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
+    showDialog(
+      context: context,
       barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
+          ),
+          backgroundColor: theme.colorScheme.surface,
+          contentPadding: EdgeInsets.zero,
+          content: Container(
+            width: MediaQuery.of(context).size.width * 0.85,
+            padding: EdgeInsets.all(AppTheme.space24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Warning Icon
+                Container(
+                  width: 60.w,
+                  height: 60.h,
+                  decoration: BoxDecoration(
+                    color: AppTheme.error.withOpacity(0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    PhosphorIcons.warning(),
+                    color: AppTheme.error,
+                    size: 32.sp,
+                  ),
+                ),
+                SizedBox(height: AppTheme.space16),
+
+                // Title
+                Text(
+                  'Reject Order #$orderNo',
+                  style: theme.textTheme.headlineMedium?.copyWith(
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
+                SizedBox(height: AppTheme.space8),
+
+                // Subtitle
+                Text(
+                  'Please provide a reason for rejecting this order',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: isDark
+                        ? AppTheme.darkTextSecondary
+                        : AppTheme.textSecondary,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: AppTheme.space20),
+
+                // Text Field
+                TextField(
+                  controller: reasonController,
+                  maxLines: 4,
+                  style: theme.textTheme.bodyMedium,
+                  decoration: InputDecoration(
+                    hintText: 'Enter reason for cancellation...',
+                    hintStyle: theme.inputDecorationTheme.hintStyle,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                      borderSide: BorderSide.none,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                      borderSide: BorderSide.none,
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                      borderSide: BorderSide(
+                        color: theme.colorScheme.primary,
+                        width: 2.w,
+                      ),
+                    ),
+                    contentPadding: EdgeInsets.all(AppTheme.space16),
+                    filled: true,
+                    fillColor: isDark
+                        ? AppTheme.darkSurfaceVariant
+                        : AppTheme.surfaceVariant,
+                  ),
+                ),
+                SizedBox(height: AppTheme.space20),
+
+                // Buttons
+                Row(
+                  children: [
+                    // Cancel Button
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () => Navigator.of(dialogContext).pop(),
+                        style: OutlinedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: AppTheme.space20,
+                            vertical: AppTheme.space12,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                          ),
+                          side: BorderSide(
+                            color: theme.colorScheme.outline,
+                            width: 1.5.w,
+                          ),
+                          foregroundColor: theme.colorScheme.onSurface,
+                        ),
+                        child: Text(
+                          'Cancel',
+                          style: theme.textTheme.labelLarge,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: AppTheme.space12),
+
+                    // Reject Button
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(dialogContext).pop();
+                          rejectOrder(orderNo, reasonController.text);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppTheme.error,
+                          foregroundColor: Colors.white,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: AppTheme.space20,
+                            vertical: AppTheme.space12,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                          ),
+                          elevation: 0,
+                        ),
+                        child: Text(
+                          'Reject',
+                          style: theme.textTheme.labelLarge?.copyWith(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
+
+
 }

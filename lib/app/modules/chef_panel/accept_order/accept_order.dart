@@ -313,7 +313,7 @@ class AcceptOrdersPage extends StatelessWidget {
                 // Reject Button
                 Expanded(
                   child: OutlinedButton.icon(
-                    onPressed: () => controller.showRejectDialog(order['orderNo']),
+                    onPressed: () => controller.showRejectDialog(order['orderNo'],context),
                     icon: Icon(PhosphorIcons.x(), size: 16.sp),
                     label: Text(
                       'Reject',
